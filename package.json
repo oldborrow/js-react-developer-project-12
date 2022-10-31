@@ -4,7 +4,10 @@
   "description": "[![Actions Status](https://github.com/oldborrow/js-react-developer-project-12/workflows/hexlet-check/badge.svg)](https://github.com/oldborrow/js-react-developer-project-12/actions)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run build --prefix frontend",
+    "start": "start-server -s ./frontend/build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "cd frontend && npm ci"
   },
   "repository": {
     "type": "git",
@@ -17,8 +20,6 @@
   },
   "homepage": "https://github.com/oldborrow/js-react-developer-project-12#readme",
   "dependencies": {
-    "@hexlet/chat-server": "^1.1.6",
-    "create-react-app": "^5.0.1",
-    "react": "^18.2.0"
+    "@hexlet/chat-server": "^1.1.6"
   }
 }
