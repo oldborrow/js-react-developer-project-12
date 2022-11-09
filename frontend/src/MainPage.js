@@ -21,7 +21,6 @@ const MainPage = () => {
     const dispatch = useDispatch()
     const socket = io()
     axios.post('api/v1/login', { username: localStorage.getItem("loggedIn"), password: localStorage.getItem("password") }).then((response) => {
-
         console.log(userInfo)
     }).catch((err) => {
         alert("idk")
@@ -49,8 +48,11 @@ const MainPage = () => {
             }
         }).then((response) => {
             dispatch(messengerActions.setMessenger(response.data))
-        }).catch((err) => {
-        });
+        })
+    }
+
+    const changeChannel = (e) => {
+        console.log(e.target)
     }
 
     return (
@@ -62,38 +64,29 @@ const MainPage = () => {
             </Row>
             <Row xs={2} md={4} lg={6}>
                 <Col sm={4}><ListGroup>
-                {messengerInfo.channels.map((ch) => <ListGroup.Item key={ch.name}>{ch.name}</ListGroup.Item>)}
+                {messengerInfo.channels.map((ch) => <ListGroup.Item key={ch.id}><Button onClick={changeChannel}>{ch.name}</Button></ListGroup.Item>)}
             </ListGroup></Col>
                 <Col sm={8}>
-                    {messengerInfo.messages.map((ch) => <div key={ch.body}>{ch.username}: {ch.body}</div>)}
+                    {messengerInfo.messages.map((ch) => <div key={ch.id}>{ch.username}: {ch.body}</div>)}
                 </Col>
             </Row>
             <Row>
                 <Col> </Col>
                 <Col><Formik
                     initialValues={{ message: ''}}
-                    onSubmit={(values, { setSubmitting }) => {
-                        socket.emit('newMessage', {body: values.message, channelId: 1, username: "admin"})
-                        // Добавить добавление в стейт
-                        // console.log(messengerInfo)
-                        // const newState = Object.assign([], messengerInfo.messages)
-                        // newState.push({body: values.message, channelId: 1, username: "admin"})
-                        // dispatch(messengerActions.setMessenger(newState))
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
+                        socket.emit('newMessage', {body: values.message, channelId: 1, username: localStorage.getItem("loggedIn")})
+                        dispatch(messengerActions.updateState(values))
+                        resetForm()
                     }}>
                     <Form>
                         <label>Message
                             <Field name="message" type="text" />
                         </label>
-
                         <button type="submit">Submit</button>
                     </Form>
                 </Formik></Col>
             </Row>
-
-
-
-
-
         </Container>
     )
 }
