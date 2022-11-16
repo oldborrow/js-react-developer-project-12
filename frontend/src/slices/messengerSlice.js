@@ -13,12 +13,22 @@ const messengerSlice = createSlice({
             const {channels, messages, currentChannelId} = payload;
             state.channels = channels
             state.messages = messages
-            state.currentChannelId = currentChannelId
+            state.channelId = currentChannelId
         },
         updateState(state, {payload}) {
-            const {message} = payload;
-            console.log(state.messages)
-            state.messages.push({body: message, channelId: 1, username: "admin"})
+            const {body, channelId, username} = payload;
+            state.messages.push({body: body, channelId: channelId, username: username})
+        },
+        setCurrentChannel(state, {payload}) {
+            state.channelId = payload
+        },
+        addChannel(state, {payload}) {
+            state.channels = [...state.channels, payload]
+        },
+        deleteChannel(state, {payload}) {
+            state.channels = state.channels.filter((el) => el.id !== payload)
+            state.messages = state.messages.filter((el) => el.channelId !== payload)
+            state.channelId = 1
         }
     }
 })
