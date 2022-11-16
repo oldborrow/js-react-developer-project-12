@@ -9,9 +9,9 @@ export default () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     useEffect(() => {
-        if (localStorage.getItem("loggedIn") !== null) {
-            navigate("/")
-        }
+        // if (localStorage.getItem("loggedIn") !== null) {
+        //     navigate("/")
+        // }
     })
 
     return (

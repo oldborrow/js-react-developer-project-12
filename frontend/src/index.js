@@ -14,6 +14,7 @@ import store from './slices/store.js';
 import { Provider } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import UserContext from "./userContext";
+import Signup from "./slices/Signup";
 
 const router = createBrowserRouter([
     {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
     {
         path: "/login",
         element: <Login/>
+    },
+    {
+        path: "/signup",
+        element: <Signup/>
     }
 ]);
 
