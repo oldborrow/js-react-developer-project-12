@@ -9,7 +9,7 @@ export default () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     useEffect(() => {
-        if (typeof localStorage.getItem("loggedIn") !== 'undefined' && localStorage.getItem("loggedIn") !== "null") {
+        if (localStorage.getItem("loggedIn") !== "null" && localStorage.getItem("loggedIn") !== null) {
             console.log("navigating to main")
             navigate("/")
         }

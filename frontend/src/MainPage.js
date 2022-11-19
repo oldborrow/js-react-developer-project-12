@@ -22,7 +22,7 @@ const MainPage = () => {
     const socket = io()
     const messengerInfo = useSelector((state) => state.messenger);
      useEffect(() => {
-         if (localStorage.getItem("loggedIn") === "null") {
+         if (localStorage.getItem("loggedIn") === "null" || localStorage.getItem("loggedIn") === null) {
              console.log("navigating to login")
              navigate("/login")
           } else {
