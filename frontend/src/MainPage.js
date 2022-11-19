@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate  } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from 'react-redux';
@@ -20,22 +20,29 @@ const MainPage = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const socket = io()
-    axios.post('api/v1/login', { username: localStorage.getItem("loggedIn"), password: localStorage.getItem("password") }).then((response) => {
-    }).catch((err) => {
-        alert(err)
-    });
-
     const messengerInfo = useSelector((state) => state.messenger);
-    if (messengerInfo.channels.length === 0) {
-        axios.get('/api/v1/data', {
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem("userToken")}`
+     useEffect(() => {
+         if (localStorage.getItem("loggedIn") === "null") {
+             console.log("navigating to login")
+             navigate("/login")
+          } else {
+             console.log("not navigating")
+             axios.post('api/v1/login', { username: localStorage.getItem("loggedIn"), password: localStorage.getItem("password") }).then((response) => {
+            }).catch((err) => {
+                alert(err)
+            });
+            if (messengerInfo.channels.length === 0) {
+                axios.get('/api/v1/data', {
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("userToken")}`
+                    }
+                }).then((response) => {
+                    dispatch(messengerActions.setMessenger(response.data))
+                    console.log(response.data)
+                })
             }
-        }).then((response) => {
-            dispatch(messengerActions.setMessenger(response.data))
-            console.log(response.data)
-        })
-    }
+        }
+     })
 
     const changeChannel = (e) => {
         e.preventDefault()
@@ -71,7 +78,7 @@ const MainPage = () => {
                         onSubmit={(values, { resetForm }) => {
                             socket.emit('newChannel', { name: values.channelName })
                             socket.on('newChannel', (payload) => {
-                                console.log(payload) // { id: 6, name: "new channel", removable: true }
+                                // { id: 6, name: "new channel", removable: true }
                                 dispatch(messengerActions.addChannel(payload))
                                 dispatch(messengerActions.setCurrentChannel(payload.id))
                             });
@@ -106,7 +113,6 @@ const MainPage = () => {
                     initialValues={{ message: ''}}
                     onSubmit={(values, { resetForm }) => {
                         socket.emit('newMessage', {body: values.message, channelId: messengerInfo.channelId, username: localStorage.getItem("loggedIn")})
-                        console.log("message " + values.message + " sent to" + messengerInfo.channelId)
                         dispatch(messengerActions.updateState({body: values.message, channelId: messengerInfo.channelId, username: localStorage.getItem("loggedIn")}))
                         resetForm()
                     }}>

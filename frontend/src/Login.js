@@ -9,11 +9,11 @@ export default () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     useEffect(() => {
-        // if (localStorage.getItem("loggedIn") !== null) {
-        //     navigate("/")
-        // }
+        if (localStorage.getItem("loggedIn") !== "null") {
+            console.log("navigating to main")
+            navigate("/")
+        }
     })
-
     return (
         <>
         <h1>Login</h1>
@@ -52,6 +52,8 @@ export default () => {
                 <button type="submit">Submit</button>
             </Form>
         </Formik>
+            <h3>Are you a new user?</h3>
+            <button onClick={() => navigate("/signup")}>Sign up here</button>
         </>
     )
 }
