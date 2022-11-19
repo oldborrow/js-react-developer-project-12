@@ -2,10 +2,15 @@ import * as Yup from "yup";
 import axios from "axios";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import {useNavigate} from "react-router-dom";
+import {useEffect} from "react";
 
 export default () => {
     const navigate = useNavigate();
-
+    useEffect(() => {
+        if (localStorage.getItem("loggedIn") !== "null" && localStorage.getItem("loggedIn") !== null) {
+            navigate("/")
+        }
+    })
     return (<>
         <h1>Sign up</h1>
     <Formik
