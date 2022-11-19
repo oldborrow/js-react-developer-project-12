@@ -27,6 +27,8 @@ const MainPage = () => {
              navigate("/login")
           } else {
              console.log("not navigating")
+             console.log(localStorage.getItem("loggedIn"))
+             console.log(typeof localStorage.getItem("loggedIn"))
              axios.post('api/v1/login', { username: localStorage.getItem("loggedIn"), password: localStorage.getItem("password") }).then((response) => {
             }).catch((err) => {
                 alert(err)
