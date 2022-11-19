@@ -2,15 +2,12 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate  } from "react-router-dom";
-import { useDispatch } from 'react-redux';
 import {useEffect} from "react";
 
 export default () => {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
     useEffect(() => {
         if (localStorage.getItem("loggedIn") !== "null" && localStorage.getItem("loggedIn") !== null) {
-            console.log("navigating to main")
             navigate("/")
         }
     })
@@ -31,9 +28,7 @@ export default () => {
                     localStorage.setItem("password", values.password)
                     localStorage.setItem("userToken", response.data.token)
                     navigate("/")
-                }).catch((err) => {
-                    alert("Wrong data")
-                });
+                })
                 setSubmitting(false);
 
             }}

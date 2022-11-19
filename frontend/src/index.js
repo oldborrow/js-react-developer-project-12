@@ -4,8 +4,7 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {
     createBrowserRouter,
-    RouterProvider,
-    Route,
+    RouterProvider
 } from "react-router-dom";
 import ErrorPage from "./error-page";
 import Login from "./Login";
@@ -13,8 +12,7 @@ import MainPage from "./MainPage";
 import store from './slices/store.js';
 import { Provider } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import UserContext from "./userContext";
-import Signup from "./slices/Signup";
+import Signup from "./Signup";
 
 const router = createBrowserRouter([
     {

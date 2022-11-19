@@ -4,31 +4,25 @@ import axios from "axios";
 import { useSelector } from 'react-redux';
 import { actions as messengerActions} from "./slices/messengerSlice";
 import { useDispatch } from 'react-redux';
-import Nav from 'react-bootstrap/Nav';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import {Button} from "react-bootstrap";
 import { io } from "socket.io-client";
-import {FastField, Field, Form, Formik} from "formik";
+import {Field, Form, Formik} from "formik";
 import Modal from "react-responsive-modal";
 import "react-responsive-modal/styles.css";
 
 const MainPage = () => {
-    const userInfo = useSelector((state) => state.user);
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const socket = io()
     const messengerInfo = useSelector((state) => state.messenger);
      useEffect(() => {
          if (localStorage.getItem("loggedIn") === "null" || localStorage.getItem("loggedIn") === null) {
-             console.log("navigating to login")
              navigate("/login")
           } else {
-             console.log("not navigating")
-             console.log(localStorage.getItem("loggedIn"))
-             console.log(typeof localStorage.getItem("loggedIn"))
              axios.post('api/v1/login', { username: localStorage.getItem("loggedIn"), password: localStorage.getItem("password") }).then((response) => {
             }).catch((err) => {
                 alert(err)
@@ -56,14 +50,24 @@ const MainPage = () => {
             dispatch(messengerActions.setCurrentChannel(newId))
         }
     }
+
     const [open, setOpen] = useState(false);
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
+
     const deleteChannel = () => {
         dispatch(messengerActions.deleteChannel(messengerInfo.channelId))
         socket.emit('removeChannel', { id: messengerInfo.channelId });
         console.log("deleting")
     }
+
+    const [openDeleteChannel, setOpenDeleteChannel] = useState(false);
+    const onOpenDeleteChannel = () => setOpenDeleteChannel(true);
+    const onCloseDeleteChannel = () => {
+        deleteChannel()
+        setOpenDeleteChannel(false);
+    }
+
     const logout = () => {
         localStorage.setItem("loggedIn", null)
         localStorage.setItem("password", null)
@@ -83,8 +87,10 @@ const MainPage = () => {
                                 // { id: 6, name: "new channel", removable: true }
                                 dispatch(messengerActions.addChannel(payload))
                                 dispatch(messengerActions.setCurrentChannel(payload.id))
+                                console.log(payload)
                             });
                             onCloseModal()
+
                         }}>
                         <Form>
                             <label>
@@ -94,6 +100,12 @@ const MainPage = () => {
                         </Form>
                     </Formik>
                 </Modal>
+
+                <Modal open={openDeleteChannel} onClose={() => setOpenDeleteChannel(false)} center>
+                    <h2>Удалить канал?</h2>
+                    <Button onClick={onCloseDeleteChannel}>Да</Button>
+                    <Button onClick={() => setOpenDeleteChannel(false)}>Нет</Button>
+                </Modal>
             </div>
             <Row>
                 <Col sm={8}><h1>Chat</h1></Col>
@@ -102,7 +114,7 @@ const MainPage = () => {
             <Row xs={2} md={4} lg={6}>
                 <Col sm={4}><ListGroup>
                     <ListGroup.Item>Каналы <Button onClick={onOpenModal}>+</Button></ListGroup.Item>
-                {messengerInfo.channels.map((ch) => ch.id === messengerInfo.channelId ? <ListGroup.Item key={ch.id}><button>{ch.name}</button> {ch.id === 1 ? null : <Button onClick={deleteChannel}>-</Button>}</ListGroup.Item> : <ListGroup.Item key={ch.id}><Button onClick={changeChannel}>{ch.name}</Button></ListGroup.Item>)}
+                {messengerInfo.channels.map((ch) => ch.id === messengerInfo.channelId ? <ListGroup.Item key={ch.id}><button>{ch.name}</button> {ch.id === 1 ? null : <Button onClick={onOpenDeleteChannel}>-</Button>}</ListGroup.Item> : <ListGroup.Item key={ch.id}><Button onClick={changeChannel}>{ch.name}</Button></ListGroup.Item>)}
 
                 </ListGroup></Col>
                 <Col sm={8}>
