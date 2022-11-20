@@ -19,7 +19,11 @@ const MainPage = () => {
     const dispatch = useDispatch()
     const socket = io()
     const messengerInfo = useSelector((state) => state.messenger);
-     useEffect(() => {
+    useEffect(() => {
+        socket.on('newMessage', (payload) => {
+            console.log("in socket on")
+            dispatch(messengerActions.updateState({body: payload.body, channelId: payload.channelId, username: payload.username}))
+        })
          if (localStorage.getItem("loggedIn") === "null" || localStorage.getItem("loggedIn") === null) {
              navigate("/login")
           } else {
@@ -38,7 +42,7 @@ const MainPage = () => {
                 })
             }
         }
-     })
+     }, [])
 
     const changeChannel = (e) => {
         e.preventDefault()
@@ -74,6 +78,9 @@ const MainPage = () => {
         localStorage.setItem("userToken", null)
         navigate("/login")
     }
+
+
+
     return (
         <Container>
             <div>
@@ -127,7 +134,7 @@ const MainPage = () => {
                     initialValues={{ message: ''}}
                     onSubmit={(values, { resetForm }) => {
                         socket.emit('newMessage', {body: values.message, channelId: messengerInfo.channelId, username: localStorage.getItem("loggedIn")})
-                        dispatch(messengerActions.updateState({body: values.message, channelId: messengerInfo.channelId, username: localStorage.getItem("loggedIn")}))
+                        //dispatch(messengerActions.updateState({body: values.message, channelId: messengerInfo.channelId, username: localStorage.getItem("loggedIn")}))
                         resetForm()
                     }}>
                     <Form>
