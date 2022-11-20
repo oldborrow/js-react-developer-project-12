@@ -21,9 +21,14 @@ const MainPage = () => {
     const messengerInfo = useSelector((state) => state.messenger);
     useEffect(() => {
         socket.on('newMessage', (payload) => {
-            console.log("in socket on")
+            console.log("in socket on newMessage")
             dispatch(messengerActions.updateState({body: payload.body, channelId: payload.channelId, username: payload.username}))
         })
+        socket.on('newChannel', (payload) => {
+            dispatch(messengerActions.addChannel(payload))
+            dispatch(messengerActions.setCurrentChannel(payload.id))
+            console.log(payload)
+        });
          if (localStorage.getItem("loggedIn") === "null" || localStorage.getItem("loggedIn") === null) {
              navigate("/login")
           } else {
@@ -90,14 +95,7 @@ const MainPage = () => {
                         initialValues={{ channelName: ''}}
                         onSubmit={(values, { resetForm }) => {
                             socket.emit('newChannel', { name: values.channelName })
-                            socket.on('newChannel', (payload) => {
-                                // { id: 6, name: "new channel", removable: true }
-                                dispatch(messengerActions.addChannel(payload))
-                                dispatch(messengerActions.setCurrentChannel(payload.id))
-                                console.log(payload)
-                            });
                             onCloseModal()
-
                         }}>
                         <Form>
                             <label>
