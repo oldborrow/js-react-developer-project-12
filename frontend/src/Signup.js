@@ -3,6 +3,7 @@ import axios from "axios";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
+import Header from "./Header";
 
 export default () => {
     const navigate = useNavigate();
@@ -12,15 +13,17 @@ export default () => {
         }
     })
     return (<>
-        <h1>Sign up</h1>
+            <Header/>
+        <h3>Зарегистрироваться</h3>
     <Formik
         initialValues={{ login: '', password: '', confirmPassword: '' }}
         validationSchema={Yup.object({
             login: Yup.string()
-                .max(20, 'Must be from 3 to 20 characters')
-                .min(3, 'Must be from 3 to 20 characters')
+                .max(20, 'От 3 до 20 символов')
+                .min(3, 'От 3 до 20 символов')
                 .required('Required'),
-            password: Yup.string().min(6, 'Must be 6 characters or more').required('Required'),
+            password: Yup.string().min(6, 'Не менее 6 символов').required('Required'),
+            confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Пароли должны совпадать')
         })}
         onSubmit={(values, { setSubmitting }) => {
             axios.post('/api/v1/signup', { username: values.login, password: values.password }).then((response) => {
@@ -37,17 +40,22 @@ export default () => {
         }}
     >
         <Form>
-            <label>Username
+            <label>Имя пользователя
                 <Field name="login" type="text" />
                 <ErrorMessage name="login" />
             </label>
 
-            <label>Password
+            <label>Пароль
                 <Field name="password" type="text" />
                 <ErrorMessage name="password" />
             </label>
 
-            <button type="submit">Submit</button>
+            <label>Подтверждение пароля
+                <Field name="confirmPassword" type="text" />
+                <ErrorMessage name="confirmPassword" />
+            </label>
+
+            <button type="submit">Зарегистрироваться</button>
         </Form>
     </Formik>
 

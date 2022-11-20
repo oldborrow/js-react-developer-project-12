@@ -13,6 +13,7 @@ import { io } from "socket.io-client";
 import {Field, Form, Formik} from "formik";
 import Modal from "react-responsive-modal";
 import "react-responsive-modal/styles.css";
+import Header from "./Header";
 
 const MainPage = () => {
     const navigate = useNavigate()
@@ -26,7 +27,7 @@ const MainPage = () => {
         })
         socket.on('newChannel', (payload) => {
             dispatch(messengerActions.addChannel(payload))
-            dispatch(messengerActions.setCurrentChannel(payload.id))
+            //dispatch(messengerActions.setCurrentChannel(payload.id))
             console.log(payload)
         });
          if (localStorage.getItem("loggedIn") === "null" || localStorage.getItem("loggedIn") === null) {
@@ -84,8 +85,6 @@ const MainPage = () => {
         navigate("/login")
     }
 
-
-
     return (
         <Container>
             <div>
@@ -101,7 +100,7 @@ const MainPage = () => {
                             <label>
                                 <Field name="channelName" type="text" />
                             </label>
-                            <button type="submit">Submit</button>
+                            <button type="submit">Отправить</button>
                         </Form>
                     </Formik>
                 </Modal>
@@ -113,13 +112,13 @@ const MainPage = () => {
                 </Modal>
             </div>
             <Row>
-                <Col sm={8}><h1>Chat</h1></Col>
+                <Col sm={8}><Header/></Col>
                 <Col sm={4}><h1><Button onClick={logout}>Выйти</Button></h1></Col>
             </Row>
             <Row xs={2} md={4} lg={6}>
                 <Col sm={4}><ListGroup>
                     <ListGroup.Item>Каналы <Button onClick={onOpenModal}>+</Button></ListGroup.Item>
-                {messengerInfo.channels.map((ch) => ch.id === messengerInfo.channelId ? <ListGroup.Item key={ch.id}><button>{ch.name}</button> {ch.id === 1 ? null : <Button onClick={onOpenDeleteChannel}>-</Button>}</ListGroup.Item> : <ListGroup.Item key={ch.id}><Button onClick={changeChannel}>{ch.name}</Button></ListGroup.Item>)}
+                {messengerInfo.channels.map((ch) => ch.id === messengerInfo.channelId ? <ListGroup.Item key={ch.id}><h7>{ch.name}</h7> {ch.id === 1 ? null : <Button onClick={onOpenDeleteChannel}>-</Button>}</ListGroup.Item> : <ListGroup.Item key={ch.id}><Button onClick={changeChannel}>{ch.name}</Button></ListGroup.Item>)}
 
                 </ListGroup></Col>
                 <Col sm={8}>
@@ -139,7 +138,7 @@ const MainPage = () => {
                         <label>Message
                             <Field name="message" type="text" />
                         </label>
-                        <button type="submit">Submit</button>
+                        <button type="submit">Отправить</button>
                     </Form>
                 </Formik></Col>
             </Row>

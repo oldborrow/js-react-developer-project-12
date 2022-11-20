@@ -3,6 +3,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate  } from "react-router-dom";
 import {useEffect} from "react";
+import Header from "./Header";
 
 export default () => {
     const navigate = useNavigate();
@@ -13,7 +14,8 @@ export default () => {
     })
     return (
         <>
-        <h1>Login</h1>
+            <Header/>
+        <h1>Войти</h1>
         <Formik
             initialValues={{ login: '', password: '' }}
             validationSchema={Yup.object({
@@ -28,27 +30,28 @@ export default () => {
                     localStorage.setItem("password", values.password)
                     localStorage.setItem("userToken", response.data.token)
                     navigate("/")
+                }).catch((err) => {
+                    alert("Неверные имя пользователя или пароль")
                 })
-                setSubmitting(false);
-
+                setSubmitting(false)
             }}
         >
             <Form>
-                <label>Username
+                <label>Ваш ник
                 <Field name="login" type="text" />
                 <ErrorMessage name="login" />
                 </label>
 
-                <label>Password
+                <label>Пароль
                 <Field name="password" type="text" />
                 <ErrorMessage name="password" />
                 </label>
 
-                <button type="submit">Submit</button>
+                <button type="submit">Войти</button>
             </Form>
         </Formik>
-            <h3>Are you a new user?</h3>
-            <button onClick={() => navigate("/signup")}>Sign up here</button>
+            <h1>Регистрация</h1>
+            <button onClick={() => navigate("/signup")}>Зарегистрироваться</button>
         </>
     )
 }
