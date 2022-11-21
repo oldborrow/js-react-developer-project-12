@@ -14,6 +14,8 @@ import {Field, Form, Formik} from "formik";
 import Modal from "react-responsive-modal";
 import "react-responsive-modal/styles.css";
 import Header from "./Header";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const MainPage = () => {
     const navigate = useNavigate()
@@ -28,6 +30,7 @@ const MainPage = () => {
         socket.on('newChannel', (payload) => {
             dispatch(messengerActions.addChannel(payload))
             //dispatch(messengerActions.setCurrentChannel(payload.id))
+            toast("Канал создан")
             console.log(payload)
         });
          if (localStorage.getItem("loggedIn") === "null" || localStorage.getItem("loggedIn") === null) {
@@ -89,15 +92,15 @@ const MainPage = () => {
         <Container>
             <div>
                 <Modal open={open} onClose={onCloseModal} center>
-                    <h2>Введите название канала</h2>
+
                     <Formik
                         initialValues={{ channelName: ''}}
                         onSubmit={(values, { resetForm }) => {
-                            socket.emit('newChannel', { name: values.channelName })
+                            socket.emit('newChannel', { name: "# " + values.channelName })
                             onCloseModal()
                         }}>
                         <Form>
-                            <label>
+                            <label>Имя канала
                                 <Field name="channelName" type="text" />
                             </label>
                             <button type="submit">Отправить</button>
@@ -142,6 +145,7 @@ const MainPage = () => {
                     </Form>
                 </Formik></Col>
             </Row>
+            <ToastContainer />
         </Container>
     )
 }
