@@ -35,7 +35,7 @@ function Signup() {
             localStorage.setItem('userToken', response.data.token);
             navigate('/');
           }).catch((err) => {
-            alert('User already exists');
+            // alert('User already exists');
             console.log(err);
           });
           setSubmitting(false);

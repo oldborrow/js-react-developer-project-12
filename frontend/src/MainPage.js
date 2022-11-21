@@ -107,7 +107,7 @@ function MainPage() {
         <Modal open={open} onClose={onCloseModal} center>
           <Formik
             initialValues={{ channelName: '' }}
-            onSubmit={(values) => {
+            onSubmit={(values, { }) => {
               socket.emit('newChannel', { name: `# ${values.channelName}` });
               onCloseModal();
             }}
@@ -176,6 +176,7 @@ function MainPage() {
               Каналы
               <Button onClick={onOpenModal}>+</Button>
             </ListGroup.Item>
+            {/* eslint-disable-next-line max-len */}
             {messengerInfo.channels.map((ch) => (ch.id === 1 || ch.id === 2 ? <ListGroup.Item key={ch.id}><Button onClick={() => changeChannel(ch.id)}>{ch.name}</Button></ListGroup.Item> : (
               <ListGroup.Item key={ch.id}>
                 <Button onClick={() => changeChannel(ch.id)}>
