@@ -5,7 +5,7 @@ import { useNavigate  } from "react-router-dom";
 import {useEffect, useState} from "react";
 import Header from "./Header";
 
-export default () => {
+const Login = () => {
     const navigate = useNavigate();
     const [wrongData, useWrongData] = useState(false);
     useEffect(() => {
@@ -57,3 +57,5 @@ export default () => {
         </>
     )
 }
+
+export default Login

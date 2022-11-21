@@ -14,7 +14,6 @@ import {Field, Form, Formik} from "formik";
 import Modal from "react-responsive-modal";
 import "react-responsive-modal/styles.css";
 import Header from "./Header";
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const MainPage = () => {

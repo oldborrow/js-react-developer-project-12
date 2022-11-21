@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import Header from "./Header";
 
-export default () => {
+const Signup = () => {
     const navigate = useNavigate();
     useEffect(() => {
         if (localStorage.getItem("loggedIn") !== "null" && localStorage.getItem("loggedIn") !== null) {
@@ -64,3 +64,5 @@ export default () => {
     )
 
 }
+
+export default Signup
