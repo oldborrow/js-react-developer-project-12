@@ -28,7 +28,11 @@ function MainPage() {
   useEffect(() => {
     socket.on('newMessage', (payload) => {
       console.log('in socket on newMessage');
-      dispatch(messengerActions.updateState({ body: payload.body, channelId: payload.channelId, username: payload.username }));
+      dispatch(messengerActions.updateState({
+        body: payload.body,
+        channelId: payload.channelId,
+        username: payload.username,
+      }));
     });
     socket.on('newChannel', (payload) => {
       dispatch(messengerActions.addChannel(payload));
@@ -39,9 +43,10 @@ function MainPage() {
     if (localStorage.getItem('loggedIn') === 'null' || localStorage.getItem('loggedIn') === null) {
       navigate('/login');
     } else {
-      axios.post('api/v1/login', { username: localStorage.getItem('loggedIn'), password: localStorage.getItem('password') }).then((response) => {
+      axios.post('api/v1/login', { username: localStorage.getItem('loggedIn'), password: localStorage.getItem('password') }).then((res) => {
+        console.log(res);
       }).catch((err) => {
-        alert(err);
+        console.log(err);
       });
       if (messengerInfo.channels.length === 0) {
         axios.get('/api/v1/data', {
@@ -79,6 +84,7 @@ function MainPage() {
     setOpenModifyChannel(true);
     console.log(modifiableChannelId);
   };
+  const [clickedDelete, setClickedDelete] = useState(false);
   const onCloseModifyChannel = () => {
     deleteChannel();
     setModifiableChannelId(null);
@@ -94,14 +100,14 @@ function MainPage() {
   };
 
   const [changeChannelName, setChangeChannelName] = useState(false);
-  const [clickedDelete, setClickedDelete] = useState(false);
+
   return (
     <Container>
       <div>
         <Modal open={open} onClose={onCloseModal} center>
           <Formik
             initialValues={{ channelName: '' }}
-            onSubmit={(values, { resetForm }) => {
+            onSubmit={(values) => {
               socket.emit('newChannel', { name: `# ${values.channelName}` });
               onCloseModal();
             }}
@@ -139,9 +145,13 @@ function MainPage() {
                 setModifiableChannelId(null);
                 setChannelRenaming(true);
                 setTimeout(() => setChannelRenaming(false), '5000');
-                // socket.emit('newMessage', {body: values.message, channelId: messengerInfo.channelId, username: localStorage.getItem("loggedIn")})
-                // //dispatch(messengerActions.updateState({body: values.message, channelId: messengerInfo.channelId, username: localStorage.getItem("loggedIn")}))
-                // resetForm()
+                // socket.emit('newMessage', {body: values.mess
+                // age, channelId: messengerInfo.channelI
+                // d, username: localStorage.getItem("loggedIn")})
+                // //dispatch(messengerActions.updateState({body: values.message
+                // , channelId: messengerInfo.channelI
+                // d, username: localStorage.getItem("loggedIn")}))
+                resetForm();
               }}
             >
               <Form>

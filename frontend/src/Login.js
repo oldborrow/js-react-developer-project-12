@@ -4,12 +4,12 @@ import {
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './Header';
 
 function Login() {
   const navigate = useNavigate();
-  const [wrongData, useWrongData] = useState(false);
+  const [wrongData, setWrongData] = useState(false);
   useEffect(() => {
     if (localStorage.getItem('loggedIn') !== 'null' && localStorage.getItem('loggedIn') !== null) {
       navigate('/');
@@ -34,7 +34,8 @@ function Login() {
             localStorage.setItem('userToken', response.data.token);
             navigate('/');
           }).catch((err) => {
-            useWrongData(true)
+            console.log(err);
+            setWrongData(true);
           });
           setSubmitting(false);
         }}
