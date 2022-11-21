@@ -66,7 +66,7 @@ const MainPage = () => {
     const deleteChannel = () => {
         dispatch(messengerActions.deleteChannel(modifiableChannelId))
         socket.emit('removeChannel', { id: modifiableChannelId });
-        console.log("deleting")
+        console.log("deleting channel with id " + modifiableChannelId)
     }
 
     const [openModifyChannel, setOpenModifyChannel] = useState(false);
@@ -127,7 +127,7 @@ const MainPage = () => {
                         onSubmit={(values, { resetForm }) => {
                             console.log(values)
                             socket.emit('renameChannel', { id: modifiableChannelId, name: values.newName });
-
+                            console.log("renaming channel " + modifiableChannelId)
                             // socket.emit('newMessage', {body: values.message, channelId: messengerInfo.channelId, username: localStorage.getItem("loggedIn")})
                             // //dispatch(messengerActions.updateState({body: values.message, channelId: messengerInfo.channelId, username: localStorage.getItem("loggedIn")}))
                             // resetForm()
