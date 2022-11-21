@@ -34,7 +34,6 @@ const MainPage = () => {
             dispatch(messengerActions.addChannel(payload))
             //dispatch(messengerActions.setCurrentChannel(payload.id))
             toast("Канал создан", {autoClose: 5000})
-            console.log(payload)
         });
          if (localStorage.getItem("loggedIn") === "null" || localStorage.getItem("loggedIn") === null) {
              navigate("/login")
