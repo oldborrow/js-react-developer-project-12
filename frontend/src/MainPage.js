@@ -149,7 +149,7 @@ const MainPage = () => {
             <Row xs={2} md={4} lg={6}>
                 <Col sm={4}><ListGroup>
                     <ListGroup.Item>Каналы <Button onClick={onOpenModal}>+</Button></ListGroup.Item>
-                {messengerInfo.channels.map((ch) => ch.id === 1 ? <ListGroup.Item key={ch.id}><Button onClick={() => changeChannel(ch.id)}>{ch.name}</Button></ListGroup.Item> : <ListGroup.Item key={ch.id}><Button onClick={() => changeChannel(ch.id)}> {ch.name}</Button> <Button onClick={() => onOpenModifyChannel(ch.id)}>Управление каналом</Button></ListGroup.Item>)}
+                {messengerInfo.channels.map((ch) => ch.id === 1 || ch.id === 2 ? <ListGroup.Item key={ch.id}><Button onClick={() => changeChannel(ch.id)}>{ch.name}</Button></ListGroup.Item> : <ListGroup.Item key={ch.id}><Button onClick={() => changeChannel(ch.id)}> {ch.name}</Button> <Button onClick={() => onOpenModifyChannel(ch.id)}>Управление каналом</Button></ListGroup.Item>)}
 
                 </ListGroup></Col>
                 <Col sm={8}>
