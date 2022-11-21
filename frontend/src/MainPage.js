@@ -82,6 +82,7 @@ const MainPage = () => {
         deleteChannel()
         setModifiableChannelId(null)
         setOpenModifyChannel(false);
+        setClickedDelete(false)
     }
 
     const logout = () => {
@@ -92,7 +93,7 @@ const MainPage = () => {
     }
 
     const [changeChannelName, setChangeChannelName] = useState(false);
-
+    const [clickedDelete, setClickedDelete] = useState(false)
     return (
         <Container>
             <div>
@@ -115,10 +116,12 @@ const MainPage = () => {
                 <Modal open={openModifyChannel} onClose={() => {
                     setOpenModifyChannel(false)
                     setChangeChannelName(false)
+                    setClickedDelete(false)
                 }} center>
                     {/*() => renameChannel(messengerInfo.channelId)*/}
                     <Button onClick={() => setChangeChannelName(true)}>Переименовать</Button>
-                    <Button onClick={onCloseModifyChannel}>Удалить</Button>
+                    <Button onClick={() => setClickedDelete(true)}>Удалить</Button>
+                    {clickedDelete ? <Button className={"btn-danger"} onClick={onCloseModifyChannel}>Опасно</Button> : null}
                     {changeChannelName ? <Formik
                         initialValues={{ newName: ''}}
                         onSubmit={(values, { resetForm }) => {
@@ -175,6 +178,7 @@ const MainPage = () => {
             </Row>
             {onChannelCreation ? <h5>Канал создан</h5> : null}
             {onChannelRenaming ? <h5>Канал переименован</h5> : null}
+
         </Container>
     )
 }
