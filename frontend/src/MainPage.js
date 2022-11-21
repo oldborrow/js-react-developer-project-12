@@ -59,7 +59,7 @@ function MainPage() {
         });
       }
     }
-  }, []);
+  });
 
   const changeChannel = (id) => {
     dispatch(messengerActions.setCurrentChannel(id));
@@ -107,12 +107,13 @@ function MainPage() {
         <Modal open={open} onClose={onCloseModal} center>
           <Formik
             initialValues={{ channelName: '' }}
-            onSubmit={(values, { }) => {
+            onSubmit={(values) => {
               socket.emit('newChannel', { name: `# ${values.channelName}` });
               onCloseModal();
             }}
           >
             <Form>
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
               <label>
                 Имя канала
                 <Field name="channelName" type="text" />
@@ -155,6 +156,7 @@ function MainPage() {
               }}
             >
               <Form>
+                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                 <label>
                   Имя канала
                   <Field name="newName" type="text" aria-label="Имя канала" />
@@ -208,11 +210,11 @@ function MainPage() {
             initialValues={{ message: '' }}
             onSubmit={(values, { resetForm }) => {
               socket.emit('newMessage', { body: values.message, channelId: messengerInfo.channelId, username: localStorage.getItem('loggedIn') });
-              // dispatch(messengerActions.updateState({body: values.message, channelId: messengerInfo.channelId, username: localStorage.getItem("loggedIn")}))
               resetForm();
             }}
           >
             <Form>
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
               <label>
                 Новое сообщение
                 <Field name="message" type="text" aria-label="Новое сообщение" />

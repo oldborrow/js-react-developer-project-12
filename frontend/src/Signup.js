@@ -42,18 +42,21 @@ function Signup() {
         }}
       >
         <Form>
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label>
             Имя пользователя
             <Field name="login" type="text" />
             <ErrorMessage name="login" />
           </label>
 
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label>
             Пароль
             <Field name="password" type="text" />
             <ErrorMessage name="password" />
           </label>
 
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label>
             Подтвердите пароль
             <Field name="confirmPassword" type="text" />

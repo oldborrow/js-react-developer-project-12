@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
+import { Button } from 'react-bootstrap';
 import Header from './Header';
 
 function Login() {
@@ -41,12 +42,14 @@ function Login() {
         }}
       >
         <Form>
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label>
             Ваш ник
             <Field name="login" type="text" />
             <ErrorMessage name="login" />
           </label>
 
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label>
             Пароль
             <Field name="password" type="text" />
@@ -58,7 +61,7 @@ function Login() {
       </Formik>
       {wrongData ? <h7>Неверные имя пользователя или пароль</h7> : null}
       <h1>Зарегистрироваться</h1>
-      <button onClick={() => navigate('/signup')}>Регистрация</button>
+      <Button onClick={() => navigate('/signup')}>Регистрация</Button>
     </>
   );
 }
