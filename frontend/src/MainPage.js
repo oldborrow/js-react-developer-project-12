@@ -135,7 +135,7 @@ const MainPage = () => {
                         resetForm()
                     }}>
                     <Form>
-                        <label>Message
+                        <label>Новое сообщение
                             <Field name="message" type="text" />
                         </label>
                         <button type="submit">Отправить</button>
