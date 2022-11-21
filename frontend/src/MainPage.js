@@ -62,7 +62,7 @@ const MainPage = () => {
     const [open, setOpen] = useState(false);
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
-    let modifiableChannelId = null
+    let [modifiableChannelId, setModifiableChannelId] = useState(null)
     const deleteChannel = () => {
         dispatch(messengerActions.deleteChannel(modifiableChannelId))
         socket.emit('removeChannel', { id: modifiableChannelId });
@@ -73,13 +73,13 @@ const MainPage = () => {
 
 
     const onOpenModifyChannel = (id) => {
-        modifiableChannelId = id
+        setModifiableChannelId(id)
         setOpenModifyChannel(true);
         console.log(modifiableChannelId)
     }
     const onCloseModifyChannel = () => {
         deleteChannel()
-        modifiableChannelId = null
+        setModifiableChannelId(null)
         setOpenModifyChannel(false);
     }
 
