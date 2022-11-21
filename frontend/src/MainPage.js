@@ -23,7 +23,6 @@ const MainPage = () => {
     const socket = io()
     const messengerInfo = useSelector((state) => state.messenger);
 
-
     const [onChannelCreation, setCreateChannel] = useState(false);
     useEffect(() => {
         socket.on('newMessage', (payload) => {
@@ -77,11 +76,11 @@ const MainPage = () => {
         console.log("deleting")
     }
 
-    const [openDeleteChannel, setOpenDeleteChannel] = useState(false);
-    const onOpenDeleteChannel = () => setOpenDeleteChannel(true);
-    const onCloseDeleteChannel = () => {
+    const [openModifyChannel, setOpenModifyChannel] = useState(false);
+    const onOpenModifyChannel = () => setOpenModifyChannel(true);
+    const onCloseModifyChannel = () => {
         deleteChannel()
-        setOpenDeleteChannel(false);
+        setOpenModifyChannel(false);
     }
 
     const logout = () => {
@@ -91,11 +90,16 @@ const MainPage = () => {
         navigate("/login")
     }
 
+    const renameChannel = () => {
+        socket.emit('renameChannel', { id: 7, name: "new name channel" });
+    }
+
+    const [changeChannelName, setChangeChannelName] = useState(false);
+
     return (
         <Container>
             <div>
                 <Modal open={open} onClose={onCloseModal} center>
-
                     <Formik
                         initialValues={{ channelName: ''}}
                         onSubmit={(values, { resetForm }) => {
@@ -111,10 +115,31 @@ const MainPage = () => {
                     </Formik>
                 </Modal>
 
-                <Modal open={openDeleteChannel} onClose={() => setOpenDeleteChannel(false)} center>
-                    <h2>Удалить канал?</h2>
-                    <Button onClick={onCloseDeleteChannel}>Да</Button>
-                    <Button onClick={() => setOpenDeleteChannel(false)}>Нет</Button>
+                <Modal open={openModifyChannel} onClose={() => {
+                    setOpenModifyChannel(false)
+                    setChangeChannelName(false)
+                }} center>
+                    {/*() => renameChannel(messengerInfo.channelId)*/}
+                    <Button onClick={() => setChangeChannelName(true)}>Переименовать</Button>
+                    <Button onClick={onCloseModifyChannel}>Удалить</Button>
+                    {changeChannelName ? <Formik
+                        initialValues={{ newName: ''}}
+                        onSubmit={(values, { resetForm }) => {
+                            console.log(values)
+                            socket.emit('renameChannel', { id: messengerInfo.channelId, name: values.newName });
+
+                            // socket.emit('newMessage', {body: values.message, channelId: messengerInfo.channelId, username: localStorage.getItem("loggedIn")})
+                            // //dispatch(messengerActions.updateState({body: values.message, channelId: messengerInfo.channelId, username: localStorage.getItem("loggedIn")}))
+                            // resetForm()
+                        }}>
+                        <Form>
+                            <label>Имя канала
+                                <Field name="newName" type="text" aria-label={"Имя канала"}/>
+                            </label>
+                            <button type="submit" >Отправить</button>
+                        </Form>
+                    </Formik> : null}
+                    {/*<Button onClick={() => setOpenModifyChannel(false)}>Нет</Button>*/}
                 </Modal>
             </div>
             <Row>
@@ -124,7 +149,7 @@ const MainPage = () => {
             <Row xs={2} md={4} lg={6}>
                 <Col sm={4}><ListGroup>
                     <ListGroup.Item>Каналы <Button onClick={onOpenModal}>+</Button></ListGroup.Item>
-                {messengerInfo.channels.map((ch) => ch.id === messengerInfo.channelId ? <ListGroup.Item key={ch.id}><h7>{ch.name}</h7> {ch.id === 1 ? null : <Button onClick={onOpenDeleteChannel}>-</Button>}</ListGroup.Item> : <ListGroup.Item key={ch.id}><Button onClick={changeChannel}>{ch.name}</Button></ListGroup.Item>)}
+                {messengerInfo.channels.map((ch) => ch.id === messengerInfo.channelId ? <ListGroup.Item key={ch.id}><h7>{ch.name}</h7> {ch.id === 1 ? null : <Button onClick={onOpenModifyChannel}>Управление каналом</Button>}</ListGroup.Item> : <ListGroup.Item key={ch.id}><Button onClick={changeChannel}>{ch.name}</Button></ListGroup.Item>)}
 
                 </ListGroup></Col>
                 <Col sm={8}>
