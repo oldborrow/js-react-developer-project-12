@@ -135,10 +135,10 @@ const MainPage = () => {
                         resetForm()
                     }}>
                     <Form>
-                        <aria-label>Новое сообщение
-                            <Field name="message" type="text" />
-                        </aria-label>
-                        <button type="submit">Отправить</button>
+                        <label>Новое сообщение
+                            <Field name="message" type="text" aria-label={"Новое сообщение"}/>
+                        </label>
+                        <button type="submit" >Отправить</button>
                     </Form>
                 </Formik></Col>
             </Row>
