@@ -142,7 +142,6 @@ const MainPage = () => {
                             <button type="submit" >Отправить</button>
                         </Form>
                     </Formik> : null}
-                    {/*<Button onClick={() => setOpenModifyChannel(false)}>Нет</Button>*/}
                 </Modal>
             </div>
             <Row>
