@@ -23,7 +23,8 @@ const MainPage = () => {
     const socket = io()
     const messengerInfo = useSelector((state) => state.messenger);
 
-    const [onChannelCreation, setCreateChannel] = useState(false);
+    const [onChannelCreation, setCreateChannel] = useState(false)
+    const [onChannelRenaming, setChannelRenaming] = useState(false)
     useEffect(() => {
         socket.on('newMessage', (payload) => {
             console.log("in socket on newMessage")
@@ -90,10 +91,6 @@ const MainPage = () => {
         navigate("/login")
     }
 
-    const renameChannel = () => {
-        socket.emit('renameChannel', { id: 7, name: "new name channel" });
-    }
-
     const [changeChannelName, setChangeChannelName] = useState(false);
 
     return (
@@ -128,6 +125,9 @@ const MainPage = () => {
                             console.log(values)
                             socket.emit('renameChannel', { id: modifiableChannelId, name: values.newName });
                             console.log("renaming channel " + modifiableChannelId)
+                            setModifiableChannelId(null)
+                            setChannelRenaming(true)
+                            setTimeout(() => setChannelRenaming(false), "5000")
                             // socket.emit('newMessage', {body: values.message, channelId: messengerInfo.channelId, username: localStorage.getItem("loggedIn")})
                             // //dispatch(messengerActions.updateState({body: values.message, channelId: messengerInfo.channelId, username: localStorage.getItem("loggedIn")}))
                             // resetForm()
@@ -174,6 +174,7 @@ const MainPage = () => {
                 </Formik></Col>
             </Row>
             {onChannelCreation ? <h5>Канал создан</h5> : null}
+            {onChannelRenaming ? <h5>Канал переименован</h5> : null}
         </Container>
     )
 }
