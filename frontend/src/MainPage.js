@@ -56,20 +56,13 @@ const MainPage = () => {
      }, [])
 
     const changeChannel = (id) => {
-        // const newCurrentChannel = e.target.innerText
-        // const oldCurrentChannel = messengerInfo.channels.find((c) => c.id === messengerInfo.channelId).name
-        //
-        // if (newCurrentChannel !== oldCurrentChannel) {
-        //     const newId = messengerInfo.channels.find((c) => c.name === newCurrentChannel).id
-        //     dispatch(messengerActions.setCurrentChannel(newId))
-        // }
         dispatch(messengerActions.setCurrentChannel(id))
     }
 
     const [open, setOpen] = useState(false);
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
-    let modifiableChannelId = 1
+    let modifiableChannelId = null
     const deleteChannel = () => {
         dispatch(messengerActions.deleteChannel(modifiableChannelId))
         socket.emit('removeChannel', { id: modifiableChannelId });
@@ -82,9 +75,11 @@ const MainPage = () => {
     const onOpenModifyChannel = (id) => {
         modifiableChannelId = id
         setOpenModifyChannel(true);
+        console.log(modifiableChannelId)
     }
     const onCloseModifyChannel = () => {
         deleteChannel()
+        modifiableChannelId = null
         setOpenModifyChannel(false);
     }
 
@@ -154,7 +149,7 @@ const MainPage = () => {
             <Row xs={2} md={4} lg={6}>
                 <Col sm={4}><ListGroup>
                     <ListGroup.Item>Каналы <Button onClick={onOpenModal}>+</Button></ListGroup.Item>
-                {messengerInfo.channels.map((ch) => ch.id === 1 ? <ListGroup.Item key={ch.id}><h7>{ch.name}</h7></ListGroup.Item> : <ListGroup.Item key={ch.id}><Button onClick={() => changeChannel(ch.id)}> {ch.name}</Button> <Button onClick={() => onOpenModifyChannel(ch.id)}>Управление каналом</Button></ListGroup.Item>)}
+                {messengerInfo.channels.map((ch) => ch.id === 1 ? <ListGroup.Item key={ch.id}><Button onClick={() => changeChannel(ch.id)}>{ch.name}</Button></ListGroup.Item> : <ListGroup.Item key={ch.id}><Button onClick={() => changeChannel(ch.id)}> {ch.name}</Button> <Button onClick={() => onOpenModifyChannel(ch.id)}>Управление каналом</Button></ListGroup.Item>)}
 
                 </ListGroup></Col>
                 <Col sm={8}>
