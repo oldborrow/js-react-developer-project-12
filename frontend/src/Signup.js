@@ -50,7 +50,7 @@ export default () => {
                 <ErrorMessage name="password" />
             </label>
 
-            <label>Подтверждение пароля
+            <label>Подтвердите пароль
                 <Field name="confirmPassword" type="text" />
                 <ErrorMessage name="confirmPassword" />
             </label>

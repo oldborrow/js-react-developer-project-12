@@ -50,7 +50,7 @@ export default () => {
                 <button type="submit">Войти</button>
             </Form>
         </Formik>
-            <h1>Регистрация</h1>
+            <h1>Зарегистрироваться</h1>
             <button onClick={() => navigate("/signup")}>Регистрация</button>
         </>
     )
