@@ -31,7 +31,14 @@ const MainPage = () => {
             dispatch(messengerActions.addChannel(payload))
             //dispatch(messengerActions.setCurrentChannel(payload.id))
             toast("Канал создан", {
-                autoClose: 20
+                position: "top-left",
+                autoClose: 1,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: 1,
+                theme: "light",
             })
             console.log(payload)
         });
