@@ -25,6 +25,7 @@ const MainPage = () => {
 
     const [onChannelCreation, setCreateChannel] = useState(false)
     const [onChannelRenaming, setChannelRenaming] = useState(false)
+    const [onChannelDeletion, setChannelDeletion] = useState(false)
     useEffect(() => {
         socket.on('newMessage', (payload) => {
             console.log("in socket on newMessage")
@@ -68,6 +69,8 @@ const MainPage = () => {
         dispatch(messengerActions.deleteChannel(modifiableChannelId))
         socket.emit('removeChannel', { id: modifiableChannelId });
         console.log("deleting channel with id " + modifiableChannelId)
+        setChannelDeletion(true)
+        setTimeout(() => setChannelDeletion(false), "5000")
     }
 
     const [openModifyChannel, setOpenModifyChannel] = useState(false);
@@ -177,7 +180,7 @@ const MainPage = () => {
             </Row>
             {onChannelCreation ? <h5>Канал создан</h5> : null}
             {onChannelRenaming ? <h5>Канал переименован</h5> : null}
-
+            {onChannelDeletion ? <h5>Канал удалён</h5> : null}
         </Container>
     )
 }
