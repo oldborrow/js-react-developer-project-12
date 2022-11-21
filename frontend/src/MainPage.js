@@ -24,7 +24,7 @@ const MainPage = () => {
     const messengerInfo = useSelector((state) => state.messenger);
 
 
-
+    const [onChannelCreation, setCreateChannel] = useState(false);
     useEffect(() => {
         socket.on('newMessage', (payload) => {
             console.log("in socket on newMessage")
@@ -32,7 +32,9 @@ const MainPage = () => {
         })
         socket.on('newChannel', (payload) => {
             dispatch(messengerActions.addChannel(payload))
-            toast("Канал создан", {autoClose: 5000})
+            //toast("Канал создан", {autoClose: 5000})
+            setCreateChannel(true)
+            setTimeout(() => setCreateChannel(false), "5000")
         });
          if (localStorage.getItem("loggedIn") === "null" || localStorage.getItem("loggedIn") === null) {
              navigate("/login")
@@ -146,7 +148,7 @@ const MainPage = () => {
                     </Form>
                 </Formik></Col>
             </Row>
-            <ToastContainer />
+            {onChannelCreation ? <h5>Канал создан</h5> : null}
         </Container>
     )
 }
