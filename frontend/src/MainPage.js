@@ -22,6 +22,9 @@ const MainPage = () => {
     const dispatch = useDispatch()
     const socket = io()
     const messengerInfo = useSelector((state) => state.messenger);
+
+
+
     useEffect(() => {
         socket.on('newMessage', (payload) => {
             console.log("in socket on newMessage")
@@ -30,16 +33,7 @@ const MainPage = () => {
         socket.on('newChannel', (payload) => {
             dispatch(messengerActions.addChannel(payload))
             //dispatch(messengerActions.setCurrentChannel(payload.id))
-            toast("Канал создан", {
-                position: "top-left",
-                autoClose: 1,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: 1,
-                theme: "light",
-            })
+            toast("Канал создан", {autoClose: 5000})
             console.log(payload)
         });
          if (localStorage.getItem("loggedIn") === "null" || localStorage.getItem("loggedIn") === null) {
