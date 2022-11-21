@@ -30,7 +30,9 @@ const MainPage = () => {
         socket.on('newChannel', (payload) => {
             dispatch(messengerActions.addChannel(payload))
             //dispatch(messengerActions.setCurrentChannel(payload.id))
-            //toast("Канал создан")
+            toast("Канал создан", {
+                autoClose: 20
+            })
             console.log(payload)
         });
          if (localStorage.getItem("loggedIn") === "null" || localStorage.getItem("loggedIn") === null) {
