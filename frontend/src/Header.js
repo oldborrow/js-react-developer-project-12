@@ -1,9 +1,10 @@
 import { useNavigate } from 'react-router-dom';
+import React from 'react';
 
 function Header() {
   const navigate = useNavigate();
 
-  return <h1 onClick={() => navigate('/')}>Hexlet Chat</h1>;
+  return <textbox onClick={() => navigate('/')} onKeyDown={() => navigate('/')}>Hexlet Chat</textbox>;
 }
 
 export default Header;
