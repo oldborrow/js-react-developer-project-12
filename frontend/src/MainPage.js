@@ -55,29 +55,34 @@ const MainPage = () => {
         }
      }, [])
 
-    const changeChannel = (e) => {
-        e.preventDefault()
-        const newCurrentChannel = e.target.innerText
-        const oldCurrentChannel = messengerInfo.channels.find((c) => c.id === messengerInfo.channelId).name
-
-        if (newCurrentChannel !== oldCurrentChannel) {
-            const newId = messengerInfo.channels.find((c) => c.name === newCurrentChannel).id
-            dispatch(messengerActions.setCurrentChannel(newId))
-        }
+    const changeChannel = (id) => {
+        // const newCurrentChannel = e.target.innerText
+        // const oldCurrentChannel = messengerInfo.channels.find((c) => c.id === messengerInfo.channelId).name
+        //
+        // if (newCurrentChannel !== oldCurrentChannel) {
+        //     const newId = messengerInfo.channels.find((c) => c.name === newCurrentChannel).id
+        //     dispatch(messengerActions.setCurrentChannel(newId))
+        // }
+        dispatch(messengerActions.setCurrentChannel(id))
     }
 
     const [open, setOpen] = useState(false);
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
-
+    let modifiableChannelId = 1
     const deleteChannel = () => {
-        dispatch(messengerActions.deleteChannel(messengerInfo.channelId))
-        socket.emit('removeChannel', { id: messengerInfo.channelId });
+        dispatch(messengerActions.deleteChannel(modifiableChannelId))
+        socket.emit('removeChannel', { id: modifiableChannelId });
         console.log("deleting")
     }
 
     const [openModifyChannel, setOpenModifyChannel] = useState(false);
-    const onOpenModifyChannel = () => setOpenModifyChannel(true);
+
+
+    const onOpenModifyChannel = (id) => {
+        modifiableChannelId = id
+        setOpenModifyChannel(true);
+    }
     const onCloseModifyChannel = () => {
         deleteChannel()
         setOpenModifyChannel(false);
@@ -126,7 +131,7 @@ const MainPage = () => {
                         initialValues={{ newName: ''}}
                         onSubmit={(values, { resetForm }) => {
                             console.log(values)
-                            socket.emit('renameChannel', { id: messengerInfo.channelId, name: values.newName });
+                            socket.emit('renameChannel', { id: modifiableChannelId, name: values.newName });
 
                             // socket.emit('newMessage', {body: values.message, channelId: messengerInfo.channelId, username: localStorage.getItem("loggedIn")})
                             // //dispatch(messengerActions.updateState({body: values.message, channelId: messengerInfo.channelId, username: localStorage.getItem("loggedIn")}))
@@ -149,7 +154,7 @@ const MainPage = () => {
             <Row xs={2} md={4} lg={6}>
                 <Col sm={4}><ListGroup>
                     <ListGroup.Item>Каналы <Button onClick={onOpenModal}>+</Button></ListGroup.Item>
-                {messengerInfo.channels.map((ch) => ch.id === messengerInfo.channelId ? <ListGroup.Item key={ch.id}><h7>{ch.name}</h7> {ch.id === 1 ? null : <Button onClick={onOpenModifyChannel}>Управление каналом</Button>}</ListGroup.Item> : <ListGroup.Item key={ch.id}><Button onClick={changeChannel}>{ch.name}</Button></ListGroup.Item>)}
+                {messengerInfo.channels.map((ch) => ch.id === 1 ? <ListGroup.Item key={ch.id}><h7>{ch.name}</h7></ListGroup.Item> : <ListGroup.Item key={ch.id}><Button onClick={() => changeChannel(ch.id)}> {ch.name}</Button> <Button onClick={() => onOpenModifyChannel(ch.id)}>Управление каналом</Button></ListGroup.Item>)}
 
                 </ListGroup></Col>
                 <Col sm={8}>
